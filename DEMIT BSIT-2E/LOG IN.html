@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css">
+    <title>Login & Signup</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            background: black;
+        }
+        
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            color: white;
+            text-align: center;
+            width: 300px;
+            display: none;
+        }
+        
+        .login-container {
+            display: block;
+        }
+        
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+        
+        input::placeholder {
+            color: white;
+        }
+        
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: auto;
+            border: none;
+            border-radius: 5px;
+            background: whitesmoke;
+            color: black;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: deepskyblue;
+        }
+        
+        a {
+            cursor: pointer;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="stars"></canvas>
+    <div class="container login-container">
+        <h1><b> Log In </b></h1>
+        <form>
+            <label><b>Email</b></label>
+            <input type="text" placeholder="Enter Email" required>
+            <label><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" required>
+            <button type="submit">Log In</button>
+        </form>
+        <p>Don't have an account? <a onclick="showSignup()">Sign-Up Here</a></p>
+    </div>
+
+    <div class="container signup-container">
+        <h1>Sign-Up</h1>
+        <form>
+            <label><b>Email</b></label>
+            <input type="email" placeholder="Enter email" required>
+            <label><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" required>
+            <label><b>Confirm Password</b></label>
+            <input type="password" placeholder="Confirm Password" required>
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>By clicking Sign-Up, you agree to our <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a>.</p>
+        <p>Already have an account? <a onclick="showLogin()">Login Here</a></p>
+    </div>
+
+    <script>
+        function showSignup() {
+            document.querySelector('.login-container').style.display = 'none';
+            document.querySelector('.signup-container').style.display = 'block';
+        }
+
+        function showLogin() {
+            document.querySelector('.signup-container').style.display = 'none';
+            document.querySelector('.login-container').style.display = 'block';
+        }
+
+        const canvas = document.getElementById('stars');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const stars = [];
+
+        function createStars() {
+            for (let i = 0; i < 150; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 2,
+                    speed: Math.random() * 0.5 + 0.1
+                });
+            }
+        }
+
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+
+            for (let star of stars) {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function animateStars() {
+            for (let star of stars) {
+                star.y += star.speed;
+                if (star.y > canvas.height) {
+                    star.y = 0;
+                    star.x = Math.random() * canvas.width;
+                }
+            }
+            drawStars();
+            requestAnimationFrame(animateStars);
+        }
+
+        createStars();
+        animateStars();
+    </script>
+</body>
+</html>
